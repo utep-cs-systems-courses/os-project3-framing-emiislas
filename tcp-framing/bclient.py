@@ -1,10 +1,9 @@
 #! /usr/bin/env python3
 
-
+# Echo client program
 import socket, sys, re, time
-sys.path.append("../lib")       # for params
-import params
 from archiver import *
+import params
 
 switchesVarDefaults = (
     (('-s', '--server'), 'server', "127.0.0.1:50001"),
@@ -17,6 +16,8 @@ progname = "framedClient"
 paramMap = params.parseParams(switchesVarDefaults)
 
 server, usage  = paramMap["server"], paramMap["usage"]
+
+
 
 if usage:
     params.usage()
@@ -58,14 +59,28 @@ if delay != 0:
     time.sleep(int(delay))
     print("done sleeping")
 
+
+#c = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+
+#address = (serverHost, serverPort)
+#c.connect(address)
+
 while 1:
     inp = input("Insert File: ")
     msg = writeByteArray(inp)
+    print(msg)
     s.send(msg)
-    data = s.recv(1024).decode()
-   # time.sleep(5) 
-    print("Received '%s'" % data)
-    if data == 0:
-        break
-print("Zero length read.  Closing")
+   # data = s.recv(1024).decode()
+    #print("Received '%s'" % data)
+    #if data == 0:
+#       break
+    s.close()
+    break
+    #c.close()
+#print("Zero length read.  Closing")
 s.close()
+
+# solve delay problems, encode inside message
+# send message as bytes find a way to convert
+# sending over socket it needs to be in bytes
+# update server to deal with threads 
